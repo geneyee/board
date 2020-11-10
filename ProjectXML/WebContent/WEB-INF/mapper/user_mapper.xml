@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+					    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user">
+	<!-- 아이디중복검사 -->
+	<select id="checkUserIdExist" parameterType="java.lang.String" resultType="java.lang.String">
+		<![CDATA[
+			select user_name
+			from user_table
+			where user_id = #{user_id}
+		]]>
+	</select>
+	
+	<!-- 회원가입 -->
+	<insert id="addUserInfo" parameterType="com.boardproject.beans.UserBean">
+		<![CDATA[
+			insert into user_table (user_idx, user_name, user_id, user_pw)
+			values (user_seq.nextval, #{user_name}, #{user_id}, #{user_pw})
+		]]>
+	</insert>
+	
+	<!-- 로그인 -->
+	<select id="getLoginUserInfo" parameterType="com.boardproject.beans.UserBean" resultType="com.boardproject.beans.UserBean">
+		<![CDATA[
+			select user_idx, user_name
+			from user_table
+			where user_id=#{user_id} and user_pw=#{user_pw}
+		]]>
+	</select>
+	
+	<!-- 정보수정 - 마이페이지 확인 -->
+	<select id="getModifyUserInfo" parameterType="java.lang.Integer" resultType="com.boardproject.beans.UserBean">
+		<![CDATA[
+			select user_id, user_name
+			from user_table
+			where user_idx = #{user_idx}
+		]]>
+	</select>
+	
+	<!-- 정보수정 - 비밀번호수정 -->
+	<update id="modifyUserInfo" parameterType="com.boardproject.beans.UserBean">
+		<![CDATA[
+			update user_table
+			set user_pw = #{user_pw}
+			where user_idx = #{user_idx}
+		]]>
+	</update>
+</mapper>
